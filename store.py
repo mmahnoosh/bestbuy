@@ -38,5 +38,15 @@ class Product:
         status = "Active" if self.active else "Inactive"
         return f'"{self.name}, Price: {self.price}, Quantity: {self.quantity}, Status: {status}"'
 
+    def buy(self, quantity) -> float:
+        if quantity <= 0:
+            raise ValueError("Invalid input: quantity must be greater than 0.")
+        if quantity > self.quantity:
+            raise ValueError("Not enough stock: there is not enough product available.")
+
+        total_price = quantity * self.price
+        self.quantity -= quantity  # Shorter way of updating the quantity
+        return total_price
+
 product = Product("MacBook Air M2",1450, 100)
 print(product.show())
