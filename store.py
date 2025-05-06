@@ -21,3 +21,22 @@ class Product:
         self.quantity = quantity
         if quantity == 0:
             self.active = False
+
+    def is_active(self) -> bool:
+        return self.active
+
+
+    def activate(self):
+        self.active = True
+
+
+    def deactivate(self):
+        self.active = False
+
+
+    def show(self) -> str:
+        status = "Active" if self.active else "Inactive"
+        return f'"{self.name}, Price: {self.price}, Quantity: {self.quantity}, Status: {status}"'
+
+product = Product("MacBook Air M2",1450, 100)
+print(product.show())
