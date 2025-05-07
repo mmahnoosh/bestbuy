@@ -11,3 +11,8 @@ class Store:
             raise TypeError("Product must have 'name', 'price', and 'quantity' attributes")
         self.products.append(product)
 
+    def remove_product(self, product):
+        try:
+            self.products.remove(product)
+        except ValueError:
+            print(f"Product {product} not found in the store.")
