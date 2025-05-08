@@ -42,7 +42,3 @@ class Product:
         total_price = quantity * self.price
         self.quantity -= quantity  # Shorter way of updating the quantity
         return total_price
-
-
-product = Product("MacBook Air M2", 1450, 100)
-print(product.show())

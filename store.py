@@ -1,5 +1,7 @@
 from typing import List
+from colorama import Fore
 from products import Product
+
 
 class Store:
 
@@ -13,8 +15,8 @@ class Store:
     def add_product(self, product):
         if not isinstance(product, Product):
             raise TypeError("Expected instance of product!")
-        #if not hasattr(product, 'name') or not hasattr(product, 'price') or not hasattr(product,'quantity'):
-           # raise TypeError("Product must have 'name', 'price', and 'quantity' attributes")
+        # if not hasattr(product, 'name') or not hasattr(product, 'price') or not hasattr(product,'quantity'):
+        # raise TypeError("Product must have 'name', 'price', and 'quantity' attributes")
         self.products.append(product)
 
     def remove_product(self, product):
@@ -23,13 +25,11 @@ class Store:
         except ValueError:
             print(f"Product {product} not found in the store.")
 
-
     def get_total_quantity(self) -> int:
         total_quantity = 0
         for product in self.products:
             total_quantity += product.quantity
         return total_quantity
-
 
     def get_all_products(self) -> List[Product]:
         activ_products = []
@@ -44,6 +44,7 @@ class Store:
             print(f'"{product.name}, Price: {product.price}, Quantity: {product.quantity}"')
         #return f'"{self.name}, Price: {self.price}, Quantity: {self.quantity}, Status: {status}"'
 """
+
     def order(self, shopping_list) -> float:
         """
             Processes an order based on a list of (Product, quantity) tuples.
@@ -54,10 +55,6 @@ class Store:
 
             Returns:
                 float: The total cost of the order.
-
-            Raises:
-                TypeError: If the item in the list is not a tuple or the first element is not a Product.
-                ValueError: If the quantity is not a positive integer or if there is insufficient stock.
 
             This method checks for input validity, ensures that the requested quantity is available,
             updates the product stock accordingly, and calculates the total order cost.
@@ -74,7 +71,8 @@ class Store:
                 raise ValueError("Quantity must be a positive integer!")
             if product.quantity < quantity:
                 raise ValueError(
-                    f"Not enough stock for {product.name}. Available: {product.quantity}, Requested: {quantity}")
+                    f"{Fore.LIGHTRED_EX}Not enough stock for {product.name}.{Fore.LIGHTWHITE_EX} Available: {product.quantity}, "
+                    f"{Fore.LIGHTRED_EX}Requested: {quantity}")
 
             total_price += product.price * quantity
             product.quantity -= quantity
