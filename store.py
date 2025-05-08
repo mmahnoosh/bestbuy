@@ -71,8 +71,9 @@ class Store:
                 raise ValueError("Quantity must be a positive integer!")
             if product.quantity < quantity:
                 raise ValueError(
-                    f"{Fore.LIGHTRED_EX}Not enough stock for {product.name}.{Fore.LIGHTWHITE_EX} Available: {product.quantity}, "
-                    f"{Fore.LIGHTRED_EX}Requested: {quantity}")
+                    f"{Fore.LIGHTRED_EX}Error while making order! {Fore.LIGHTYELLOW_EX}Quantity larger than what exists."
+                    f"{Fore.LIGHTWHITE_EX} Available: {Fore.LIGHTGREEN_EX}{product.quantity}, "
+                    f"{Fore.LIGHTYELLOW_EX}Requested: {Fore.LIGHTRED_EX}{quantity}")
 
             total_price += product.price * quantity
             product.quantity -= quantity
