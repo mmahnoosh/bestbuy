@@ -1,11 +1,25 @@
 from typing import List
+
 from colorama import Fore
+
 from products import Product
 
 
 class Store:
+    """
+        A class to represent a store that manages products and processes orders.
+        Attributes:
+            products (List[Product]): A list of Product instances available in the store.
+    """
 
     def __init__(self, products=None):
+        """
+        Initialize the Store with a list of products.
+        Args:
+            products (List[Product], optional): A list of products to initialize the store. Defaults to an empty list.
+        Raises:
+            TypeError: If the provided products are not in a list.
+        """
         if not isinstance(products, list):
             raise TypeError("Expected a list of product!")
         if products is None:
@@ -13,6 +27,13 @@ class Store:
         self.products = products
 
     def add_product(self, product):
+        """
+        Add a product to the store inventory.
+        Args:
+            product (Product): The product to add.
+        Raises:
+            TypeError: If the provided product is not an instance of Product.
+        """
         if not isinstance(product, Product):
             raise TypeError("Expected instance of product!")
         # if not hasattr(product, 'name') or not hasattr(product, 'price') or not hasattr(product,'quantity'):
@@ -20,30 +41,40 @@ class Store:
         self.products.append(product)
 
     def remove_product(self, product):
+        """
+        Remove a product from the store inventory.
+        Args:
+            product (Product): The product to remove.
+        Prints:
+            Error message if the product is not found in the store.
+        """
         try:
             self.products.remove(product)
         except ValueError:
             print(f"Product {product} not found in the store.")
 
     def get_total_quantity(self) -> int:
+        """
+            Calculate the total quantity of all products in the store.
+            Returns:
+                int: The total quantity of all products.
+            """
         total_quantity = 0
         for product in self.products:
             total_quantity += product.quantity
         return total_quantity
 
     def get_all_products(self) -> List[Product]:
+        """
+        Retrieve a list of all active products in the store.
+        Returns:
+                List[Product]: A list of active products.
+        """
         activ_products = []
         for product in self.products:
             if product.active:
                 activ_products.append(product)
         return activ_products
-
-    """def show_all(self):
-
-        for product in self.products:
-            print(f'"{product.name}, Price: {product.price}, Quantity: {product.quantity}"')
-        #return f'"{self.name}, Price: {self.price}, Quantity: {self.quantity}, Status: {status}"'
-"""
 
     def order(self, shopping_list) -> float:
         """

@@ -1,16 +1,27 @@
-import products
-from store import Store
 from colorama import Fore, init
 
+import products
+from store import Store
+
 init()
-prompt = (f"{Fore.LIGHTYELLOW_EX }|{Fore.LIGHTWHITE_EX } 1. List all products in store  {Fore.LIGHTYELLOW_EX }|\n"
-          f"|{Fore.LIGHTWHITE_EX } 2. Show total amount in store  {Fore.LIGHTYELLOW_EX }|\n"
-          f"|{Fore.LIGHTWHITE_EX } 3. Make an order               {Fore.LIGHTYELLOW_EX }|\n"
-          f"|{Fore.LIGHTWHITE_EX } 4. Quit                        {Fore.LIGHTYELLOW_EX }|")
+prompt = (
+    f"{Fore.LIGHTYELLOW_EX}|{Fore.LIGHTWHITE_EX} 1. List all products in store  {Fore.LIGHTYELLOW_EX}|\n"
+    f"|{Fore.LIGHTWHITE_EX} 2. Show total amount in store  {Fore.LIGHTYELLOW_EX}|\n"
+    f"|{Fore.LIGHTWHITE_EX} 3. Make an order               {Fore.LIGHTYELLOW_EX}|\n"
+    f"|{Fore.LIGHTWHITE_EX} 4. Quit                        {Fore.LIGHTYELLOW_EX}|")
 
 
 def start(store):
-    # products = Store.get_all_products()
+    """
+        Start the interactive store management application.
+
+        This function provides a menu-driven interface for interacting with the store.
+        The user can list products, view total inventory, make an order, or exit the program.
+
+        Args:
+            store (Store): An instance of the Store class containing available products.
+        """
+    items = store.get_all_products()
     while True:
         print(Fore.LIGHTYELLOW_EX + "\n", "=" * 32)
         print(prompt)
@@ -22,18 +33,20 @@ def start(store):
             continue
 
         if choice == 1:
-            print(Fore.LIGHTCYAN_EX + "Available Products:" )
+            print(Fore.LIGHTCYAN_EX + "Available Products:")
             print("-" * 58)
-            products = store.get_all_products()
-            for i, product in enumerate(products, start=1):
-                print(f"{Fore.LIGHTWHITE_EX }{i}. {product.name}, Price: ${product.price}, Quantity: {product.quantity}")
+
+            for i, product in enumerate(items, start=1):
+                print(
+                    f"{Fore.LIGHTWHITE_EX}{i}. {product.name}, Price: ${product.price}, Quantity: {product.quantity}")
             print(Fore.LIGHTCYAN_EX + "-" * 58)
             input(Fore.LIGHTGREEN_EX + " <<   Press Enter to continue  >>")
 
         elif choice == 2:
             total_amount = store.get_total_quantity()
             print(Fore.LIGHTCYAN_EX + "-" * 58)
-            print(f"{Fore.LIGHTWHITE_EX}>>> Total of {Fore.LIGHTGREEN_EX}{total_amount}{Fore.LIGHTWHITE_EX} items in store!")
+            print(
+                f"{Fore.LIGHTWHITE_EX}>>> Total of {Fore.LIGHTGREEN_EX}{total_amount}{Fore.LIGHTWHITE_EX} items in store!")
             print(Fore.LIGHTCYAN_EX + "-" * 58)
             input(Fore.LIGHTGREEN_EX + " <<   Press Enter to continue  >>")
 
@@ -41,8 +54,8 @@ def start(store):
             shopping_list = []
             print(Fore.LIGHTCYAN_EX + "Available Products:")
             print("-" * 58)
-            products = store.get_all_products()
-            for i, product in enumerate(products, start=1):
+
+            for i, product in enumerate(items, start=1):
                 print(
                     f"{Fore.LIGHTWHITE_EX}{i}. {product.name}, Price: ${product.price}, Quantity: {product.quantity}")
             print(Fore.LIGHTCYAN_EX + "-" * 58)
@@ -66,7 +79,8 @@ def start(store):
             try:
                 total_price = store.order(shopping_list)
                 print("-" * 58)
-                print(f"{Fore.LIGHTWHITE_EX}Order made! Total payment: ${Fore.LIGHTMAGENTA_EX}{total_price}")
+                print(
+                    f"{Fore.LIGHTWHITE_EX}Order made! Total payment: ${Fore.LIGHTMAGENTA_EX}{total_price}")
                 print("-" * 58)
                 print(Fore.LIGHTCYAN_EX + "Available Products:")
                 print("-" * 58)
