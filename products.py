@@ -9,15 +9,17 @@ class Product:
         active (bool): The activation status of the product.
     """
 
-    def __init__(self, name, price, quantity):
+    def __init__(self, name: str, price: float, quantity: int):
         """
         Initialize a new product instance.
+
         Args:
             name (str): The name of the product.
             price (float): The price of the product. Must be non-negative.
             quantity (int): The quantity of the product. Must be non-negative.
+
         Raises:
-            ValueError: If name is empty or if price/quantity is negative.
+            ValueError: If the name is empty or if price/quantity is negative.
         """
         if not name:
             raise ValueError("Invalid input: name must not be empty")
@@ -26,70 +28,97 @@ class Product:
         self.name = name
         self.price = price
         self.quantity = quantity
-        self.active = True
+        self.active = quantity > 0
 
     def get_quantity(self) -> int:
         """
-        Get the current quantity of the product.
+        Retrieve the current quantity of the product.
+
         Returns:
             int: The available quantity of the product.
         """
         return self.quantity
 
-    def set_quantity(self, quantity):
+    def set_quantity(self, quantity: int):
         """
-        Set the quantity of the product and update its active status.
+        Update the quantity of the product and adjust its active status accordingly.
+
         Args:
-            quantity (int): The new quantity of the product.
+            quantity (int): The new quantity of the product. Must be a non-negative integer.
+
+        Raises:
+            ValueError: If the quantity is not a non-negative integer.
         """
+        if not isinstance(quantity, int) or quantity < 0:
+            raise ValueError("Quantity must be a non-negative integer.")
         self.quantity = quantity
         if quantity == 0:
-            self.active = False
+            self.deactivate()
+        elif not self.active:
+            self.activate()
 
     def is_active(self) -> bool:
         """
-        Check if the product is active.
+        Check whether the product is currently active.
+
         Returns:
-            bool: True if active, False otherwise.
+            bool: True if the product is active, False otherwise.
         """
         return self.active
 
     def activate(self):
         """
-        Activate the product, setting its status to active.
+        Set the product's status to active.
+
+        Note:
+            The product can only be activated if the quantity is greater than zero.
         """
-        self.active = True
+        if self.quantity > 0:
+            self.active = True
 
     def deactivate(self):
         """
-        Deactivate the product, setting its status to inactive.
+        Set the product's status to inactive.
+
+        Note:
+            Deactivation occurs when the product quantity reaches zero.
         """
         self.active = False
 
     def show(self) -> str:
         """
-        Display the product's details as a formatted string.
+        Generate a formatted string representing the product's details.
+
         Returns:
-            str: A string representation of the product, including name, price, quantity, and status.
+            str: A formatted string including the product's name, price, quantity, and status.
         """
         status = "Active" if self.active else "Inactive"
         return f'"{self.name}, Price: {self.price}, Quantity: {self.quantity}, Status: {status}"'
 
-    def buy(self, quantity) -> float:
+    def buy(self, quantity: int) -> float:
         """
         Purchase a specified quantity of the product.
+
         Args:
-            quantity (int): The quantity to purchase. Must be positive and less than or equal to available stock.
+            quantity (int): The number of units to purchase. Must be positive and not exceed available stock.
+
         Returns:
-            float: The total cost of the purchase.
+            float: The total cost of the purchase (price * quantity).
+
         Raises:
-            ValueError: If quantity is non-positive or exceeds available stock.
+            ValueError: If the product is inactive.
+            ValueError: If the quantity is not a positive integer.
+            ValueError: If the quantity exceeds the available stock.
         """
-        if quantity <= 0:
-            raise ValueError("Invalid input: quantity must be greater than 0.")
+        if not self.is_active():
+            raise ValueError("This product is inactive and cannot be purchased.")
+        if not isinstance(quantity, int) or quantity <= 0:
+            raise ValueError("Quantity must be a positive integer.")
         if quantity > self.quantity:
-            raise ValueError("Not enough stock: there is not enough product available.")
+            raise ValueError("Not enough stock available.")
 
         total_price = quantity * self.price
-        self.quantity -= quantity
+        self.set_quantity(self.quantity - quantity)
+
         return total_price
+

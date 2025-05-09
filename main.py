@@ -11,19 +11,25 @@ prompt = (
     f"|{Fore.LIGHTWHITE_EX} 4. Quit                        {Fore.LIGHTYELLOW_EX}|")
 
 
+def display_products(items):
+    print(Fore.LIGHTCYAN_EX + "Available Products:")
+    print("-" * 58)
+    for i, product in enumerate(items, start=1):
+        print(
+            f"{Fore.LIGHTWHITE_EX}{i}. {product.name}, Price: ${product.price}, Quantity: {product.quantity}")
+    print(Fore.LIGHTCYAN_EX + "-" * 58)
+
+
 def start(store):
     """
         Start the interactive store management application.
 
-        This function provides a menu-driven interface for interacting with the store.
-        The user can list products, view total inventory, make an order, or exit the program.
-
         Args:
             store (Store): An instance of the Store class containing available products.
         """
-    items = store.get_all_products()
     while True:
-        print(Fore.LIGHTYELLOW_EX + "\n", "=" * 32)
+        print(Fore.LIGHTMAGENTA_EX + "\n      <<   Store Menu   >>")
+        print(Fore.LIGHTYELLOW_EX + "", "=" * 32)
         print(prompt)
         print(Fore.LIGHTYELLOW_EX + "", "=" * 32)
         try:
@@ -33,13 +39,8 @@ def start(store):
             continue
 
         if choice == 1:
-            print(Fore.LIGHTCYAN_EX + "Available Products:")
-            print("-" * 58)
-
-            for i, product in enumerate(items, start=1):
-                print(
-                    f"{Fore.LIGHTWHITE_EX}{i}. {product.name}, Price: ${product.price}, Quantity: {product.quantity}")
-            print(Fore.LIGHTCYAN_EX + "-" * 58)
+            items = store.get_all_products()
+            display_products(items)
             input(Fore.LIGHTGREEN_EX + " <<   Press Enter to continue  >>")
 
         elif choice == 2:
@@ -52,27 +53,26 @@ def start(store):
 
         elif choice == 3:
             shopping_list = []
-            print(Fore.LIGHTCYAN_EX + "Available Products:")
-            print("-" * 58)
-
-            for i, product in enumerate(items, start=1):
-                print(
-                    f"{Fore.LIGHTWHITE_EX}{i}. {product.name}, Price: ${product.price}, Quantity: {product.quantity}")
-            print(Fore.LIGHTCYAN_EX + "-" * 58)
+            items = store.get_all_products()
+            display_products(items)
             print(Fore.LIGHTGREEN_EX + " \n<<  When you want to finish order, enter -> '0'. >>")
 
             while True:
                 try:
-                    product_index = int(input("Which product # do you want? ")) - 1
+                    product_index = int(
+                        input(Fore.LIGHTWHITE_EX + "Which product # do you want? ")) - 1
                     if product_index == -1:
                         break
-                    quantity = int(input("What amount do you want? "))
-
                     product = store.products[product_index]
 
-                    shopping_list.append((product, quantity))
+                    if not product.is_active():
+                        print(Fore.LIGHTRED_EX + "This product is inactive and cannot be ordered.")
+                        continue
+
+                    quantity = int(input(Fore.LIGHTWHITE_EX + "What amount do you want? "))
                     print(Fore.LIGHTCYAN_EX + "-" * 58)
-                    print("Product added to list!")
+                    shopping_list.append((product, quantity))
+
                 except (ValueError, IndexError):
                     print(Fore.LIGHTRED_EX + "Invalid input. Please try again.")
 
@@ -81,31 +81,25 @@ def start(store):
                 print("-" * 58)
                 print(
                     f"{Fore.LIGHTWHITE_EX}Order made! Total payment: ${Fore.LIGHTMAGENTA_EX}{total_price}")
-                print("-" * 58)
-                print(Fore.LIGHTCYAN_EX + "Available Products:")
-                print("-" * 58)
-                products = store.get_all_products()
-                for i, product in enumerate(products, start=1):
-                    print(
-                        f"{Fore.LIGHTWHITE_EX}{i}. {product.name}, Price: ${product.price}, Quantity: {product.quantity}")
                 print(Fore.LIGHTCYAN_EX + "-" * 58)
-
+                display_products(store.get_all_products())
             except Exception as e:
-                print(f"Order failed: {e}")
-
+                print(f"{Fore.RED}Order failed: {e}")
 
         elif choice == 4:
-            print(" <<   The program is finish!   >>")
+            print(Fore.LIGHTBLUE_EX+ "-" * 35)
+            print(Fore.LIGHTBLUE_EX + " <<   The program is finish!   >>")
             exit()
 
         else:
-            print("Invalid choice. Please enter a number between 1 and 4.")
+            print(Fore.LIGHTRED_EX + "Invalid choice. Please enter a number between 1 and 4.")
 
 
 # setup initial stock of inventory
-product_list = [products.Product("MacBook Air M2", price=1450, quantity=100),
-                products.Product("Bose QuietComfort Earbuds", price=250, quantity=500),
-                products.Product("Google Pixel 7", price=500, quantity=250)
-                ]
+product_list = [
+    products.Product("MacBook Air M2", price=1450, quantity=100),
+    products.Product("Bose QuietComfort Earbuds", price=250, quantity=500),
+    products.Product("Google Pixel 7", price=500, quantity=250)
+]
 best_buy = Store(product_list)
 start(best_buy)
