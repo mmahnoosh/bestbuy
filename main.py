@@ -35,7 +35,7 @@ def start(store):
             input(Fore.LIGHTGREEN_EX + " <<   Press Enter to continue  >>")
 
         elif choice == 2:
-            store.display_products()
+            store.display_products(store.get_all_products())
             total_amount = store.get_total_quantity()
             print(Fore.LIGHTCYAN_EX + "-" * 58)
             print(
@@ -44,7 +44,14 @@ def start(store):
             input(Fore.LIGHTGREEN_EX + " <<   Press Enter to continue  >>")
 
         elif choice == 3:
-            print(store.get_shoping_list())
+            store.display_products(store.get_all_products())
+            shoping_list = store.get_shoping_list()
+            total_price = store.order(shoping_list)
+            print("-" * 58)
+            print(
+                f"{Fore.LIGHTWHITE_EX}Order made! Total payment: ${Fore.LIGHTMAGENTA_EX}{total_price}")
+            print(Fore.LIGHTCYAN_EX + "-" * 58)
+            store.display_products(store.get_all_products())
             #store.order(shoping_list)
             continue
             """shopping_list = []

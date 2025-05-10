@@ -105,7 +105,6 @@ class Store:
         return total_price
 
     def get_shoping_list(self):
-        self.display_products(self.get_all_products())
 
         shoping_list = []
         print(Fore.LIGHTGREEN_EX + " \n<<  When you want to finish order, enter -> '0'. >>")
@@ -138,7 +137,7 @@ class Store:
 
     def order(self,  shoping_list):
         total_price = 0
-        shopping_list = []
+        """shopping_list = []
         print(Fore.LIGHTGREEN_EX + " \n<<  When you want to finish order, enter -> '0'. >>")
         while True:
             try:
@@ -163,20 +162,13 @@ class Store:
                 shopping_list.append((product, quantity))
 
             except (ValueError, IndexError):
-                print(Fore.LIGHTRED_EX + "Invalid input. Please try again.")
+                print(Fore.LIGHTRED_EX + "Invalid input. Please try again.")"""
 
-        for item in shopping_list:
-            if not isinstance(item, tuple) or len(item) != 2:
-                raise TypeError("Expected a tuple of (Product, quantity)!")
-                product, quantity = item
-                total_price += product.price * quantity
-                product.quantity -= quantity
-            print("-" * 58)
-            print(
-                f"{Fore.LIGHTWHITE_EX}Order made! Total payment: ${Fore.LIGHTMAGENTA_EX}{total_price}")
-            print()
-            print(Fore.LIGHTCYAN_EX + "-" * 58)
-            self.display_products(self.get_all_products())
+        for item in shoping_list:
+            product, quantity = item
+            total_price += product.price * quantity
+            product.quantity -= quantity
+
         return total_price
 
     def display_products(self, items):
