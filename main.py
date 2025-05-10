@@ -52,41 +52,6 @@ def start(store):
                 f"{Fore.LIGHTWHITE_EX}Order made! Total payment: ${Fore.LIGHTMAGENTA_EX}{total_price}")
             print(Fore.LIGHTCYAN_EX + "-" * 58)
             store.display_products(store.get_all_products())
-            continue
-            """shopping_list = []
-            items = store.get_all_products()
-            display_products(items)
-            print(Fore.LIGHTGREEN_EX + " \n<<  When you want to finish order, enter -> '0'. >>")
-"""
-            while True:
-                try:
-                    product_index = int(
-                        input(Fore.LIGHTWHITE_EX + "Which product # do you want? ")) - 1
-                    if product_index == -1:
-                        break
-                    product = store.products[product_index]
-
-                    if not product.is_active():
-                        print(Fore.LIGHTRED_EX + "This product is inactive and cannot be ordered.")
-                        continue
-
-                    quantity = int(input(Fore.LIGHTWHITE_EX + "What amount do you want? "))
-                    print(Fore.LIGHTCYAN_EX + "-" * 58)
-                    shopping_list.append((product, quantity))
-
-                except (ValueError, IndexError):
-                    print(Fore.LIGHTRED_EX + "Invalid input. Please try again.")
-
-            try:
-                total_price = store.order(shopping_list)
-                print("-" * 58)
-                print(
-                    f"{Fore.LIGHTWHITE_EX}Order made! Total payment: ${Fore.LIGHTMAGENTA_EX}{total_price}")
-                print()
-                print(Fore.LIGHTCYAN_EX + "-" * 58)
-                display_products(items)
-            except Exception as e:
-                print(f"{Fore.RED}Order failed: {e}")
 
         elif choice == 4:
             print(Fore.LIGHTBLUE_EX+ "-" * 35)
