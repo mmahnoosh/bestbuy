@@ -35,6 +35,7 @@ def start(store):
             input(Fore.LIGHTGREEN_EX + " <<   Press Enter to continue  >>")
 
         elif choice == 2:
+            store.display_products()
             total_amount = store.get_total_quantity()
             print(Fore.LIGHTCYAN_EX + "-" * 58)
             print(

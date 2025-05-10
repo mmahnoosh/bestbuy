@@ -105,6 +105,8 @@ class Store:
         return total_price
 
     def get_shoping_list(self):
+        self.display_products(self.get_all_products())
+
         shoping_list = []
         print(Fore.LIGHTGREEN_EX + " \n<<  When you want to finish order, enter -> '0'. >>")
         while True:
@@ -135,8 +137,6 @@ class Store:
         return shoping_list
 
     def order(self,  shoping_list):
-        self.display_products(self.get_all_products())
-
         total_price = 0
         shopping_list = []
         print(Fore.LIGHTGREEN_EX + " \n<<  When you want to finish order, enter -> '0'. >>")
