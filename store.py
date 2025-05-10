@@ -99,8 +99,9 @@ class Store:
                         f"{Fore.LIGHTRED_EX}Error while making order! {Fore.LIGHTYELLOW_EX}Quantity larger than what exists."
                         f"{Fore.LIGHTWHITE_EX} Available: {Fore.LIGHTGREEN_EX}{product.quantity}, "
                         f"{Fore.LIGHTYELLOW_EX}Requested: {Fore.LIGHTRED_EX}{quantity}")
-                print(Fore.LIGHTCYAN_EX + "-" * 58)
                 shopping_list.append((product, quantity))
+                print("Product added to list!")
+                print(Fore.LIGHTCYAN_EX + "-" * 58)
 
             except (ValueError, IndexError):
                 print(Fore.LIGHTRED_EX + "Invalid input. Please try again.")
