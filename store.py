@@ -75,34 +75,6 @@ class Store:
                 activ_products.append(product)
         return activ_products
 
-    def order_alt(self, shopping_list) -> float:
-
-        total_price = 0
-        for item in shopping_list:
-            if not isinstance(item, tuple) or len(item) != 2:
-                raise TypeError("Expected a tuple of (Product, quantity)!")
-
-            product, quantity = item
-            if not isinstance(product, Product):
-                raise TypeError("First element of tuple must be an instance of Product!")
-            """if not isinstance(quantity, int) or quantity < 1:
-                raise ValueError("Quantity must be a positive integer!")
-            if product.quantity < quantity:
-                raise ValueError(
-                    f"{Fore.LIGHTRED_EX}Error while making order! {Fore.LIGHTYELLOW_EX}Quantity larger than what exists."
-                    f"{Fore.LIGHTWHITE_EX} Available: {Fore.LIGHTGREEN_EX}{product.quantity}, "
-                    f"{Fore.LIGHTYELLOW_EX}Requested: {Fore.LIGHTRED_EX}{quantity}")
-
-            if not product.is_active():
-                raise ValueError(f"Product '{product.name}' is inactive and cannot be ordered.")"""
-
-            total_price += product.price * quantity
-            product.quantity -= quantity
-
-            if product.quantity == 0:
-                product.deactivate()
-            print("add item in order ----------")
-        return total_price
 
     def get_shoping_list(self):
 
