@@ -76,9 +76,9 @@ class Store:
         return activ_products
 
 
-    def get_shoping_list(self):
+    def get_shopping_list(self):
 
-        shoping_list = []
+        shopping_list = []
         print(Fore.LIGHTGREEN_EX + " \n<<  When you want to finish order, enter -> '0'. >>")
         while True:
             try:
@@ -100,14 +100,14 @@ class Store:
                         f"{Fore.LIGHTWHITE_EX} Available: {Fore.LIGHTGREEN_EX}{product.quantity}, "
                         f"{Fore.LIGHTYELLOW_EX}Requested: {Fore.LIGHTRED_EX}{quantity}")
                 print(Fore.LIGHTCYAN_EX + "-" * 58)
-                shoping_list.append((product, quantity))
+                shopping_list.append((product, quantity))
 
             except (ValueError, IndexError):
                 print(Fore.LIGHTRED_EX + "Invalid input. Please try again.")
 
-        return shoping_list
+        return shopping_list
 
-    def order(self,  shoping_list):
+    def order(self,  shopping_list):
         total_price = 0
         """shopping_list = []
         print(Fore.LIGHTGREEN_EX + " \n<<  When you want to finish order, enter -> '0'. >>")
@@ -136,7 +136,7 @@ class Store:
             except (ValueError, IndexError):
                 print(Fore.LIGHTRED_EX + "Invalid input. Please try again.")"""
 
-        for item in shoping_list:
+        for item in shopping_list:
             product, quantity = item
             total_price += product.price * quantity
             product.quantity -= quantity

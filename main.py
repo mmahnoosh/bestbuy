@@ -45,14 +45,13 @@ def start(store):
 
         elif choice == 3:
             store.display_products(store.get_all_products())
-            shoping_list = store.get_shoping_list()
-            total_price = store.order(shoping_list)
+            shopping_list = store.get_shopping_list()
+            total_price = store.order(shopping_list)
             print("-" * 58)
             print(
                 f"{Fore.LIGHTWHITE_EX}Order made! Total payment: ${Fore.LIGHTMAGENTA_EX}{total_price}")
             print(Fore.LIGHTCYAN_EX + "-" * 58)
             store.display_products(store.get_all_products())
-            #store.order(shoping_list)
             continue
             """shopping_list = []
             items = store.get_all_products()
