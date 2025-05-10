@@ -54,12 +54,13 @@ def start(store):
             store.display_products(store.get_all_products())
 
         elif choice == 4:
-            print(Fore.LIGHTBLUE_EX+ "-" * 35)
+            print(Fore.LIGHTBLUE_EX + "-" * 35)
             print(Fore.LIGHTBLUE_EX + " <<   The program is finish!   >>")
             exit()
 
         else:
             print(Fore.LIGHTRED_EX + "Invalid choice. Please enter a number between 1 and 4.")
+
 
 def main():
     # setup initial stock of inventory
