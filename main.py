@@ -11,15 +11,6 @@ prompt = (
     f"|{Fore.LIGHTWHITE_EX} 4. Quit                        {Fore.LIGHTYELLOW_EX}|")
 
 
-def display_products(items):
-    print(Fore.LIGHTCYAN_EX + "Available Products:")
-    print("-" * 58)
-    for i, product in enumerate(items, start=1):
-        print(
-            f"{Fore.LIGHTWHITE_EX}{i}. {product.name}, Price: ${product.price}, Quantity: {product.quantity}")
-    print(Fore.LIGHTCYAN_EX + "-" * 58)
-
-
 def start(store):
     """
         Start the interactive store management application.
@@ -40,7 +31,7 @@ def start(store):
 
         if choice == 1:
             items = store.get_all_products()
-            display_products(items)
+            store.display_products(items)
             input(Fore.LIGHTGREEN_EX + " <<   Press Enter to continue  >>")
 
         elif choice == 2:
@@ -52,11 +43,14 @@ def start(store):
             input(Fore.LIGHTGREEN_EX + " <<   Press Enter to continue  >>")
 
         elif choice == 3:
-            shopping_list = []
+            print(store.get_shoping_list())
+            #store.order(shoping_list)
+            continue
+            """shopping_list = []
             items = store.get_all_products()
             display_products(items)
             print(Fore.LIGHTGREEN_EX + " \n<<  When you want to finish order, enter -> '0'. >>")
-
+"""
             while True:
                 try:
                     product_index = int(
@@ -81,8 +75,9 @@ def start(store):
                 print("-" * 58)
                 print(
                     f"{Fore.LIGHTWHITE_EX}Order made! Total payment: ${Fore.LIGHTMAGENTA_EX}{total_price}")
+                print()
                 print(Fore.LIGHTCYAN_EX + "-" * 58)
-                display_products(store.get_all_products())
+                display_products(items)
             except Exception as e:
                 print(f"{Fore.RED}Order failed: {e}")
 
@@ -94,12 +89,16 @@ def start(store):
         else:
             print(Fore.LIGHTRED_EX + "Invalid choice. Please enter a number between 1 and 4.")
 
+def main():
+    # setup initial stock of inventory
+    product_list = [
+        products.Product("MacBook Air M2", price=1450, quantity=100),
+        products.Product("Bose QuietComfort Earbuds", price=250, quantity=500),
+        products.Product("Google Pixel 7", price=500, quantity=250)
+    ]
+    best_buy = Store(product_list)
+    start(best_buy)
 
-# setup initial stock of inventory
-product_list = [
-    products.Product("MacBook Air M2", price=1450, quantity=100),
-    products.Product("Bose QuietComfort Earbuds", price=250, quantity=500),
-    products.Product("Google Pixel 7", price=500, quantity=250)
-]
-best_buy = Store(product_list)
-start(best_buy)
+
+if __name__ == "__main__":
+    main()

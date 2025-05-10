@@ -75,28 +75,8 @@ class Store:
                 activ_products.append(product)
         return activ_products
 
-    def order(self, shopping_list) -> float:
-        """
-        Process an order based on a list of (Product, quantity) tuples.
+    def order_alt(self, shopping_list) -> float:
 
-        Args:
-            shopping_list (List[Tuple[Product, int]]):
-                A list where each tuple contains a Product instance and the desired quantity.
-
-        Returns:
-            float: The total cost of the order.
-
-        Raises:
-            TypeError: If the shopping list is not a list of (Product, quantity) tuples.
-            TypeError: If the product in the tuple is not an instance of Product.
-            ValueError: If the quantity is not a positive integer.
-            ValueError: If the product quantity is less than the requested quantity.
-            ValueError: If the product is inactive.
-
-        Notes:
-            - This method uses `colorama` to display error messages with colors.
-            - If the order is successful, the product quantity is reduced and the product may be deactivated.
-        """
         total_price = 0
         for item in shopping_list:
             if not isinstance(item, tuple) or len(item) != 2:
@@ -105,7 +85,7 @@ class Store:
             product, quantity = item
             if not isinstance(product, Product):
                 raise TypeError("First element of tuple must be an instance of Product!")
-            if not isinstance(quantity, int) or quantity < 1:
+            """if not isinstance(quantity, int) or quantity < 1:
                 raise ValueError("Quantity must be a positive integer!")
             if product.quantity < quantity:
                 raise ValueError(
@@ -114,12 +94,95 @@ class Store:
                     f"{Fore.LIGHTYELLOW_EX}Requested: {Fore.LIGHTRED_EX}{quantity}")
 
             if not product.is_active():
-                raise ValueError(f"Product '{product.name}' is inactive and cannot be ordered.")
+                raise ValueError(f"Product '{product.name}' is inactive and cannot be ordered.")"""
 
             total_price += product.price * quantity
             product.quantity -= quantity
 
             if product.quantity == 0:
                 product.deactivate()
-
+            print("add item in order ----------")
         return total_price
+
+    def get_shoping_list(self):
+        shoping_list = []
+        print(Fore.LIGHTGREEN_EX + " \n<<  When you want to finish order, enter -> '0'. >>")
+        while True:
+            try:
+                product_index = int(
+                    input(Fore.LIGHTWHITE_EX + "Which product # do you want? ")) - 1
+                if product_index == -1:
+                    break
+
+                product = self.products[product_index]
+                if not product.is_active():
+                    print(Fore.LIGHTRED_EX + "This product is inactive and cannot be ordered.")
+                    continue
+                quantity = int(input(Fore.LIGHTWHITE_EX + "What amount do you want? "))
+                if not isinstance(quantity, int) or quantity < 1:
+                    raise ValueError("Quantity must be a positive integer!")
+                if product.quantity < quantity:
+                    raise ValueError(
+                        f"{Fore.LIGHTRED_EX}Error while making order! {Fore.LIGHTYELLOW_EX}Quantity larger than what exists."
+                        f"{Fore.LIGHTWHITE_EX} Available: {Fore.LIGHTGREEN_EX}{product.quantity}, "
+                        f"{Fore.LIGHTYELLOW_EX}Requested: {Fore.LIGHTRED_EX}{quantity}")
+                print(Fore.LIGHTCYAN_EX + "-" * 58)
+                shoping_list.append((product, quantity))
+
+            except (ValueError, IndexError):
+                print(Fore.LIGHTRED_EX + "Invalid input. Please try again.")
+
+        return shoping_list
+
+    def order(self,  shoping_list):
+        self.display_products(self.get_all_products())
+
+        total_price = 0
+        shopping_list = []
+        print(Fore.LIGHTGREEN_EX + " \n<<  When you want to finish order, enter -> '0'. >>")
+        while True:
+            try:
+                product_index = int(
+                    input(Fore.LIGHTWHITE_EX + "Which product # do you want? ")) - 1
+                if product_index == -1:
+                    break
+
+                product = self.products[product_index]
+                if not product.is_active():
+                    print(Fore.LIGHTRED_EX + "This product is inactive and cannot be ordered.")
+                    continue
+                quantity = int(input(Fore.LIGHTWHITE_EX + "What amount do you want? "))
+                if not isinstance(quantity, int) or quantity < 1:
+                    raise ValueError("Quantity must be a positive integer!")
+                if product.quantity < quantity:
+                    raise ValueError(
+                        f"{Fore.LIGHTRED_EX}Error while making order! {Fore.LIGHTYELLOW_EX}Quantity larger than what exists."
+                        f"{Fore.LIGHTWHITE_EX} Available: {Fore.LIGHTGREEN_EX}{product.quantity}, "
+                        f"{Fore.LIGHTYELLOW_EX}Requested: {Fore.LIGHTRED_EX}{quantity}")
+                print(Fore.LIGHTCYAN_EX + "-" * 58)
+                shopping_list.append((product, quantity))
+
+            except (ValueError, IndexError):
+                print(Fore.LIGHTRED_EX + "Invalid input. Please try again.")
+
+        for item in shopping_list:
+            if not isinstance(item, tuple) or len(item) != 2:
+                raise TypeError("Expected a tuple of (Product, quantity)!")
+                product, quantity = item
+                total_price += product.price * quantity
+                product.quantity -= quantity
+            print("-" * 58)
+            print(
+                f"{Fore.LIGHTWHITE_EX}Order made! Total payment: ${Fore.LIGHTMAGENTA_EX}{total_price}")
+            print()
+            print(Fore.LIGHTCYAN_EX + "-" * 58)
+            self.display_products(self.get_all_products())
+        return total_price
+
+    def display_products(self, items):
+        print(Fore.LIGHTCYAN_EX + "Available Products:")
+        print("-" * 58)
+        for i, product in enumerate(items, start=1):
+            print(
+                f"{Fore.LIGHTWHITE_EX}{i}. {product.name}, Price: ${product.price}, Quantity: {product.quantity}")
+        print(Fore.LIGHTCYAN_EX + "-" * 58)
