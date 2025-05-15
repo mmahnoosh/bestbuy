@@ -79,14 +79,14 @@ class Store:
     def get_shopping_list(self):
 
         shopping_list = []
-        print(Fore.LIGHTGREEN_EX + " \n<<  When you want to finish order, enter -> '0'. >>")
+        print(Fore.LIGHTGREEN_EX + " \n<<  When you want to finish order, enter empty text. >>")
         while True:
             try:
-                product_index = int(
-                    input(Fore.LIGHTWHITE_EX + "Which product # do you want? ")) - 1
-                if product_index == -1:
+                product_index = (
+                    input(Fore.LIGHTWHITE_EX + "Which product # do you want? "))
+                if product_index == "":
                     break
-
+                product_index = int(product_index) - 1
                 product = self.products[product_index]
                 if not product.is_active():
                     print(Fore.LIGHTRED_EX + "This product is inactive and cannot be ordered.")
