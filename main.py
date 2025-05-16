@@ -65,8 +65,13 @@ def display_total_quantity(store: Any) -> None:
 
 def make_order(store: Any) -> None:
     store.display_products(store.get_all_products())
-    shopping_list = store.get_shopping_list()
-    total_price = store.order(shopping_list)
+    new_shopping_list = store.new_shopping_list()
+    try:
+        total_price = store.new_order(new_shopping_list)
+    except ValueError as e:
+        display_message(str(e), Fore.LIGHTRED_EX)
+        return
+    #total_price = store.new_order(new_shopping_list)
     display_message("-" * 58)
     display_message(f"Order made! Total payment: ${total_price}", Fore.LIGHTMAGENTA_EX)
     display_message("-" * 58, Fore.LIGHTCYAN_EX)
