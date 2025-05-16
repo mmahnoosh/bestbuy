@@ -67,7 +67,7 @@ class Store:
         """
         Retrieve a list of all active products in the store.
         Returns:
-                List[Product]: A list of active products.
+            List[Product]: A list of active products.
         """
         activ_products = []
         for product in self.products:
@@ -77,6 +77,11 @@ class Store:
 
 
     def display_products(self, items):
+        """
+            Display the list of products with their details.
+            Args:
+                items (List[Product]): The list of products to display.
+        """
         print(Fore.LIGHTCYAN_EX + "Available Products:")
         print("-" * 58)
         for i, product in enumerate(items, start=1):
@@ -85,6 +90,11 @@ class Store:
         print(Fore.LIGHTCYAN_EX + "-" * 58)
 
     def new_shopping_list(self):
+        """
+            Collect a shopping list from user input.
+            Returns:
+                List[tuple[Product, int]]: A list of product-quantity pairs.
+        """
         new_shopping_list = []
         print(Fore.LIGHTGREEN_EX + " \n<<  When you want to finish order, enter empty text. >>")
         while True:
@@ -108,12 +118,20 @@ class Store:
         return new_shopping_list
 
     def new_order(self, new_shopping_list):
-
+        """
+           Process a new order based on a shopping list.
+            Args:
+                shopping_list (List[tuple[Product, int]]): A list of product-quantity pairs.
+            Returns:
+                float: The total price of the order.
+            Raises:
+                    TypeError: If the shopping list contains invalid data.
+                    ValueError: If the requested quantity is not available.
+        """
         total_price = 0
         for item in new_shopping_list:
             if not isinstance(item, tuple) or len(item) != 2:
                 raise TypeError("Expected a tuple of (Product, quantity)!")
-
             product, quantity = item
             if not isinstance(product, Product):
                 raise TypeError("First element of tuple must be an instance of Product!")

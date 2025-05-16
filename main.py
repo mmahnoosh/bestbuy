@@ -7,10 +7,19 @@ from store import Store
 
 
 def display_message(message: str, color: Any = Fore.LIGHTWHITE_EX) -> None:
+    """
+    Display a message in the console with a specified color.
+    Args:
+        message (str): The message to display.
+        color (Any, optional): The color to display the message in. Defaults to Fore.LIGHTWHITE_EX.
+    """
     print(color + message + Fore.RESET)
 
 
 def display_menu() -> None:
+    """
+        Display the main menu options to the user.
+    """
     menu = [
         "   1. Display all products",
         "   2. Display total quantity",
@@ -24,7 +33,7 @@ def display_menu() -> None:
     display_message("=" * 32, Fore.LIGHTYELLOW_EX)
 
 
-def start(store: Any) -> None:
+def start(store: Store) -> None:
     """
     Start the interactive store management application.
 
@@ -53,6 +62,12 @@ def start(store: Any) -> None:
 
 
 def display_total_quantity(store: Any) -> None:
+    """
+        Display the total quantity of items in the store along with all product details.
+
+        Args:
+            store (Any): An instance of the Store class containing available products.
+    """
     store.display_products(store.get_all_products())
     total_amount = store.get_total_quantity()
     display_message("-" * 58, Fore.LIGHTCYAN_EX)
@@ -64,6 +79,12 @@ def display_total_quantity(store: Any) -> None:
 
 
 def make_order(store: Any) -> None:
+    """
+        Create a new order and display the total price.
+
+        Args:
+            store (Any): An instance of the Store class containing available products.
+    """
     store.display_products(store.get_all_products())
     new_shopping_list = store.new_shopping_list()
     try:
@@ -71,7 +92,6 @@ def make_order(store: Any) -> None:
     except ValueError as e:
         display_message(str(e), Fore.LIGHTRED_EX)
         return
-    #total_price = store.new_order(new_shopping_list)
     display_message("-" * 58)
     display_message(f"Order made! Total payment: ${total_price}", Fore.LIGHTMAGENTA_EX)
     display_message("-" * 58, Fore.LIGHTCYAN_EX)
@@ -79,13 +99,18 @@ def make_order(store: Any) -> None:
 
 
 def exit_program() -> None:
+    """
+       Exit the program with a goodbye message.
+    """
     display_message("-" * 35, Fore.LIGHTBLUE_EX)
     display_message(" <<   The program is finished!   >>", Fore.LIGHTBLUE_EX)
     exit()
 
 
 def main():
-    # setup initial stock of inventory
+    """
+        Initialize the store with initial products and start the application.
+    """
     product_list = [
         products.Product("MacBook Air M2", price=1450, quantity=100),
         products.Product("Bose QuietComfort Earbuds", price=250, quantity=500),

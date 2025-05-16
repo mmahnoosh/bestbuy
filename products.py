@@ -12,12 +12,10 @@ class Product:
     def __init__(self, name: str, price: float, quantity: int):
         """
         Initialize a new product instance.
-
         Args:
             name (str): The name of the product.
             price (float): The price of the product. Must be non-negative.
             quantity (int): The quantity of the product. Must be non-negative.
-
         Raises:
             ValueError: If the name is empty or if price/quantity is negative.
         """
@@ -32,7 +30,7 @@ class Product:
 
     def get_quantity(self) -> int:
         """
-        Retrieve the current quantity of the product.
+        Get the current quantity of the product.
 
         Returns:
             int: The available quantity of the product.
@@ -42,10 +40,8 @@ class Product:
     def set_quantity(self, quantity: int):
         """
         Update the quantity of the product and adjust its active status accordingly.
-
         Args:
             quantity (int): The new quantity of the product. Must be a non-negative integer.
-
         Raises:
             ValueError: If the quantity is not a non-negative integer.
         """
@@ -59,8 +55,7 @@ class Product:
 
     def is_active(self) -> bool:
         """
-        Check whether the product is currently active.
-
+        Check if the product is currently active.
         Returns:
             bool: True if the product is active, False otherwise.
         """
@@ -69,7 +64,6 @@ class Product:
     def activate(self):
         """
         Set the product's status to active.
-
         Note:
             The product can only be activated if the quantity is greater than zero.
         """
@@ -79,7 +73,6 @@ class Product:
     def deactivate(self):
         """
         Set the product's status to inactive.
-
         Note:
             Deactivation occurs when the product quantity reaches zero.
         """
@@ -88,7 +81,6 @@ class Product:
     def show(self) -> str:
         """
         Generate a formatted string representing the product's details.
-
         Returns:
             str: A formatted string including the product's name, price, quantity, and status.
         """
