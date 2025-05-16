@@ -75,7 +75,6 @@ class Store:
                 activ_products.append(product)
         return activ_products
 
-
     def get_shopping_list(self):
 
         shopping_list = []
@@ -108,7 +107,7 @@ class Store:
 
         return shopping_list
 
-    def order(self,  shopping_list):
+    def order(self, shopping_list):
         total_price = 0
         for item in shopping_list:
             product, quantity = item

@@ -1,65 +1,82 @@
-from colorama import Fore, init
+from typing import Any
+
+from colorama import Fore
 
 import products
 from store import Store
 
-init()
-prompt = (
-    f"{Fore.LIGHTYELLOW_EX}|{Fore.LIGHTWHITE_EX} 1. List all products in store  {Fore.LIGHTYELLOW_EX}|\n"
-    f"|{Fore.LIGHTWHITE_EX} 2. Show total amount in store  {Fore.LIGHTYELLOW_EX}|\n"
-    f"|{Fore.LIGHTWHITE_EX} 3. Make an order               {Fore.LIGHTYELLOW_EX}|\n"
-    f"|{Fore.LIGHTWHITE_EX} 4. Quit                        {Fore.LIGHTYELLOW_EX}|")
+
+def display_message(message: str, color: Any = Fore.LIGHTWHITE_EX) -> None:
+    print(color + message + Fore.RESET)
 
 
-def start(store):
+def display_menu() -> None:
+    menu = [
+        "   1. Display all products",
+        "   2. Display total quantity",
+        "   3. Make an order",
+        "   4. Exit"
+    ]
+    display_message("\n      <<   Store Menu   >>", Fore.LIGHTMAGENTA_EX)
+    display_message("=" * 32, Fore.LIGHTYELLOW_EX)
+    for item in menu:
+        display_message(item, Fore.LIGHTWHITE_EX)
+    display_message("=" * 32, Fore.LIGHTYELLOW_EX)
+
+
+def start(store: Any) -> None:
     """
-        Start the interactive store management application.
+    Start the interactive store management application.
 
-        Args:
-            store (Store): An instance of the Store class containing available products.
-        """
+    Args:
+        store (Store): An instance of the Store class containing available products.
+    """
+    menu_actions = {
+        1: lambda: store.display_products(store.get_all_products()),
+        2: lambda: display_total_quantity(store),
+        3: lambda: make_order(store),
+        4: exit_program
+    }
+
     while True:
-        print(Fore.LIGHTMAGENTA_EX + "\n      <<   Store Menu   >>")
-        print(Fore.LIGHTYELLOW_EX + "", "=" * 32)
-        print(prompt)
-        print(Fore.LIGHTYELLOW_EX + "", "=" * 32)
+        display_menu()
         try:
             choice = int(input(Fore.LIGHTMAGENTA_EX + "       Enter your choice: "))
+            action = menu_actions.get(choice)
+            if action:
+                action()
+            else:
+                display_message("Invalid choice. Please enter a number between 1 and 4.",
+                                Fore.LIGHTRED_EX)
         except ValueError:
-            print(Fore.LIGHTRED_EX + "Invalid input. Please enter a number between 1 and 4.")
-            continue
+            display_message("Invalid input. Please enter a number.", Fore.LIGHTRED_EX)
 
-        if choice == 1:
-            items = store.get_all_products()
-            store.display_products(items)
-            input(Fore.LIGHTGREEN_EX + " <<   Press Enter to continue  >>")
 
-        elif choice == 2:
-            store.display_products(store.get_all_products())
-            total_amount = store.get_total_quantity()
-            print(Fore.LIGHTCYAN_EX + "-" * 58)
-            print(
-                f"{Fore.LIGHTWHITE_EX}>>> Total of {Fore.LIGHTGREEN_EX}{total_amount}{Fore.LIGHTWHITE_EX} items in store!")
-            print(Fore.LIGHTCYAN_EX + "-" * 58)
-            input(Fore.LIGHTGREEN_EX + " <<   Press Enter to continue  >>")
+def display_total_quantity(store: Any) -> None:
+    store.display_products(store.get_all_products())
+    total_amount = store.get_total_quantity()
+    display_message("-" * 58, Fore.LIGHTCYAN_EX)
+    display_message(
+        f"Total of {Fore.LIGHTCYAN_EX}{total_amount}{Fore.LIGHTWHITE_EX} items in store!",
+        Fore.LIGHTWHITE_EX)
+    display_message("-" * 58, Fore.LIGHTCYAN_EX)
+    input(Fore.LIGHTGREEN_EX + " <<   Press Enter to continue  >>")
 
-        elif choice == 3:
-            store.display_products(store.get_all_products())
-            shopping_list = store.get_shopping_list()
-            total_price = store.order(shopping_list)
-            print("-" * 58)
-            print(
-                f"{Fore.LIGHTWHITE_EX}Order made! Total payment: ${Fore.LIGHTMAGENTA_EX}{total_price}")
-            print(Fore.LIGHTCYAN_EX + "-" * 58)
-            store.display_products(store.get_all_products())
 
-        elif choice == 4:
-            print(Fore.LIGHTBLUE_EX + "-" * 35)
-            print(Fore.LIGHTBLUE_EX + " <<   The program is finish!   >>")
-            exit()
+def make_order(store: Any) -> None:
+    store.display_products(store.get_all_products())
+    shopping_list = store.get_shopping_list()
+    total_price = store.order(shopping_list)
+    display_message("-" * 58)
+    display_message(f"Order made! Total payment: ${total_price}", Fore.LIGHTMAGENTA_EX)
+    display_message("-" * 58, Fore.LIGHTCYAN_EX)
+    store.display_products(store.get_all_products())
 
-        else:
-            print(Fore.LIGHTRED_EX + "Invalid choice. Please enter a number between 1 and 4.")
+
+def exit_program() -> None:
+    display_message("-" * 35, Fore.LIGHTBLUE_EX)
+    display_message(" <<   The program is finished!   >>", Fore.LIGHTBLUE_EX)
+    exit()
 
 
 def main():

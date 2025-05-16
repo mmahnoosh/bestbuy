@@ -121,4 +121,3 @@ class Product:
         self.set_quantity(self.quantity - quantity)
 
         return total_price
-
