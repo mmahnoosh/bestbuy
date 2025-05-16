@@ -94,30 +94,3 @@ class Product:
         """
         status = "Active" if self.active else "Inactive"
         return f'"{self.name}, Price: {self.price}, Quantity: {self.quantity}, Status: {status}"'
-
-    def buy(self, quantity: int) -> float:
-        """
-        Purchase a specified quantity of the product.
-
-        Args:
-            quantity (int): The number of units to purchase. Must be positive and not exceed available stock.
-
-        Returns:
-            float: The total cost of the purchase (price * quantity).
-
-        Raises:
-            ValueError: If the product is inactive.
-            ValueError: If the quantity is not a positive integer.
-            ValueError: If the quantity exceeds the available stock.
-        """
-        if not self.is_active():
-            raise ValueError("This product is inactive and cannot be purchased.")
-        if not isinstance(quantity, int) or quantity <= 0:
-            raise ValueError("Quantity must be a positive integer.")
-        if quantity > self.quantity:
-            raise ValueError("Not enough stock available.")
-
-        total_price = quantity * self.price
-        self.set_quantity(self.quantity - quantity)
-
-        return total_price
