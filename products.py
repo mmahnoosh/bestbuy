@@ -88,7 +88,6 @@ class Product:
             return f'"{self.name}, Price: {self.price}, Quantity: {self.quantity}"'
         return ""
 
-
     def buy(self, quantity):
         if not self.is_active():
             raise ValueError("Product inactive!")

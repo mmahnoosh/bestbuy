@@ -19,11 +19,10 @@ def get_order_product(product_list):
 def get_order_quantity():
     while True:
         product_quantity = (
-            input(c.white + "Quantity must be a positive integer!"))
+            input(c.white + "what amount do you want? "))
         if not product_quantity:
             return product_quantity
         if not product_quantity.isdigit():
             print(c.red + "Error. Please enter a whole number" + c.reset)
             continue
         return int(product_quantity)
-

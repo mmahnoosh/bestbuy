@@ -23,9 +23,12 @@ def display_menu() -> None:
 
 def display_products(store):
     """
-        Display the list of products with their details.
-        Args:
-            items (List[Product]): The list of products to display.
+    Displays a list of all available products in the store with their details.
+
+    Args:
+        store (Store): An object representing the store, which must implement
+                       a `get_all_products()` method that returns a list of Product instances.
+
     """
     product_list = store.get_all_products()
     print(c.cyan + "Available Products:")
@@ -37,9 +40,18 @@ def display_products(store):
 
 def create_shopping_list(store):
     """
-        Collect a shopping list from user input.
-        Returns:
-            List[tuple[Product, int]]: A list of product-quantity pairs.
+    Interactively collects a shopping list from user input.
+
+    The function prompts the user to select products and specify quantities.
+    The process continues until the user enters an empty input to finish.
+
+    Args:
+        store (Store): An object representing the store, which must implement
+                       a `get_all_products()` method returning a list of Product instances.
+
+    Returns:
+        List[tuple[Product, int]]: A list of tuples, each containing a Product
+                                   instance and the corresponding quantity selected by the user.
     """
     shopping_list = []
     product_list = store.get_all_products()
@@ -58,26 +70,15 @@ def create_shopping_list(store):
     return shopping_list
 
 
-def display_total_quantity(store) -> None:
-    """
-        Display the total quantity of items in the store along with all product details.
-e
-        Args:
-            store (Any): An instance of the Store class containing available products.
-    """
-    total_amount = store.get_total_quantity()
-    print(c.cyan + "-" * 58)
-    print(f"{c.white} Total of {c.cyan}{total_amount} {c.white}items in store.")
-    print(c.cyan + "-" * 58)
-    input(c.green + " <<   Press Enter to continue  >>")
-
-
 def make_order(store) -> None:
     """
-        Create a new order and display the total price.
+    Creates a new order based on user input and displays the total price.
+    The function first shows the available products, then collects the user's shopping list,
+    attempts to place the order, and displays the order summary or an error if the order fails.
 
-        Args:
-            store (Any): An instance of the Store class containing available products.
+    Args:
+        store (Store): An instance of the Store class that provides product data and
+                       implements the `order(shopping_list)` method.
     """
     display_products(store)
     shopping_list = create_shopping_list(store)
@@ -87,6 +88,22 @@ def make_order(store) -> None:
         print(c.cyan + "-" * 58)
     except ValueError as e:
         print(c.red + str(e))
+
+
+def display_total_quantity(store) -> None:
+    """
+    Displays the total quantity of all items in the store along with product details.
+
+    Args:
+        store (Store): An instance of the Store class, expected to implement
+                       a `get_total_quantity()` method returning the total item count.
+
+    """
+    total_amount = store.get_total_quantity()
+    print(c.cyan + "-" * 58)
+    print(f"{c.white} Total of {c.cyan}{total_amount} {c.white}items in store.")
+    print(c.cyan + "-" * 58)
+    input(c.green + " <<   Press Enter to continue  >>")
 
 
 def exit_program() -> None:
