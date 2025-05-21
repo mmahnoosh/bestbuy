@@ -84,5 +84,15 @@ class Product:
         Returns:
             str: A formatted string including the product's name, price, quantity, and status.
         """
-        status = "Active" if self.active else "Inactive"
-        return f'"{self.name}, Price: {self.price}, Quantity: {self.quantity}, Status: {status}"'
+        if self.is_active():
+            return f'"{self.name}, Price: {self.price}, Quantity: {self.quantity}"'
+        return ""
+
+
+    def buy(self, quantity):
+        if not self.is_active():
+            raise ValueError("Product inactive!")
+        if self.get_quantity() < quantity:
+            raise ValueError("Quantity larger then what exists!")
+        self.set_quantity(self.get_quantity() - quantity)
+        return quantity * self.price

@@ -1,19 +1,7 @@
-from typing import Any
-
-from colorama import Fore
-
 import products
+from color import Color as c
 from store import Store
-
-
-def display_message(message: str, color: Any = Fore.LIGHTWHITE_EX) -> None:
-    """
-    Display a message in the console with a specified color.
-    Args:
-        message (str): The message to display.
-        color (Any, optional): The color to display the message in. Defaults to Fore.LIGHTWHITE_EX.
-    """
-    print(color + message + Fore.RESET)
+from user_input import get_order_product, get_order_quantity
 
 
 def display_menu() -> None:
@@ -26,11 +14,88 @@ def display_menu() -> None:
         "   3. Make an order",
         "   4. Exit"
     ]
-    display_message("\n      <<   Store Menu   >>", Fore.LIGHTMAGENTA_EX)
-    display_message("=" * 32, Fore.LIGHTYELLOW_EX)
+    print(c.magenta + "\n      <<   Store Menu   >>")
+    print(c.yellow + "=" * 32)
     for item in menu:
-        display_message(item, Fore.LIGHTWHITE_EX)
-    display_message("=" * 32, Fore.LIGHTYELLOW_EX)
+        print(c.white + item)
+    print(c.yellow + "=" * 32 + c.reset)
+
+
+def display_products(store):
+    """
+        Display the list of products with their details.
+        Args:
+            items (List[Product]): The list of products to display.
+    """
+    product_list = store.get_all_products()
+    print(c.cyan + "Available Products:")
+    print("-" * 58)
+    for i, product in enumerate(product_list, start=1):
+        print(f"{c.white}{i}. {product.show()}")
+    print(c.cyan + "-" * 58)
+
+
+def create_shopping_list(store):
+    """
+        Collect a shopping list from user input.
+        Returns:
+            List[tuple[Product, int]]: A list of product-quantity pairs.
+    """
+    shopping_list = []
+    product_list = store.get_all_products()
+    print(c.green + " \n<<  When you want to finish order, enter empty text. >>")
+    while True:
+        product_number = get_order_product(product_list)
+        if not product_number:
+            break
+        quantity = get_order_quantity()
+        if not quantity:
+            break
+        shopping_list.append((product_list[product_number - 1], quantity))
+        print(c.magenta + "Product added to list!")
+        print(c.cyan + "-" * 58)
+
+    return shopping_list
+
+
+def display_total_quantity(store) -> None:
+    """
+        Display the total quantity of items in the store along with all product details.
+e
+        Args:
+            store (Any): An instance of the Store class containing available products.
+    """
+    total_amount = store.get_total_quantity()
+    print(c.cyan + "-" * 58)
+    print(f"{c.white} Total of {c.cyan}{total_amount} {c.white}items in store.")
+    print(c.cyan + "-" * 58)
+    input(c.green + " <<   Press Enter to continue  >>")
+
+
+def make_order(store) -> None:
+    """
+        Create a new order and display the total price.
+
+        Args:
+            store (Any): An instance of the Store class containing available products.
+    """
+    display_products(store)
+    shopping_list = create_shopping_list(store)
+    try:
+        print(c.cyan + "-" * 58)
+        print(store.order(shopping_list))
+        print(c.cyan + "-" * 58)
+    except ValueError as e:
+        print(c.red + str(e))
+
+
+def exit_program() -> None:
+    """
+       Exit the program with a goodbye message.
+    """
+    print(c.blue + "-" * 35)
+    print(c.blue + " <<   The program is finished!   >>")
+    exit()
 
 
 def start(store: Store) -> None:
@@ -41,7 +106,7 @@ def start(store: Store) -> None:
         store (Store): An instance of the Store class containing available products.
     """
     menu_actions = {
-        1: lambda: store.display_products(store.get_all_products()),
+        1: lambda: display_products(store),
         2: lambda: display_total_quantity(store),
         3: lambda: make_order(store),
         4: exit_program
@@ -50,61 +115,14 @@ def start(store: Store) -> None:
     while True:
         display_menu()
         try:
-            choice = int(input(Fore.LIGHTMAGENTA_EX + "       Enter your choice: "))
+            choice = int(input(c.magenta + "       Enter your choice: "))
             action = menu_actions.get(choice)
             if action:
                 action()
             else:
-                display_message("Invalid choice. Please enter a number between 1 and 4.",
-                                Fore.LIGHTRED_EX)
+                print(c.red + "Invalid choice. Please enter a number between 1 and 4.")
         except ValueError:
-            display_message("Invalid input. Please enter a number.", Fore.LIGHTRED_EX)
-
-
-def display_total_quantity(store: Any) -> None:
-    """
-        Display the total quantity of items in the store along with all product details.
-
-        Args:
-            store (Any): An instance of the Store class containing available products.
-    """
-    store.display_products(store.get_all_products())
-    total_amount = store.get_total_quantity()
-    display_message("-" * 58, Fore.LIGHTCYAN_EX)
-    display_message(
-        f"Total of {Fore.LIGHTCYAN_EX}{total_amount}{Fore.LIGHTWHITE_EX} items in store!",
-        Fore.LIGHTWHITE_EX)
-    display_message("-" * 58, Fore.LIGHTCYAN_EX)
-    input(Fore.LIGHTGREEN_EX + " <<   Press Enter to continue  >>")
-
-
-def make_order(store: Any) -> None:
-    """
-        Create a new order and display the total price.
-
-        Args:
-            store (Any): An instance of the Store class containing available products.
-    """
-    store.display_products(store.get_all_products())
-    new_shopping_list = store.new_shopping_list()
-    try:
-        total_price = store.new_order(new_shopping_list)
-    except ValueError as e:
-        display_message(str(e), Fore.LIGHTRED_EX)
-        return
-    display_message("-" * 58)
-    display_message(f"Order made! Total payment: ${total_price}", Fore.LIGHTMAGENTA_EX)
-    display_message("-" * 58, Fore.LIGHTCYAN_EX)
-    store.display_products(store.get_all_products())
-
-
-def exit_program() -> None:
-    """
-       Exit the program with a goodbye message.
-    """
-    display_message("-" * 35, Fore.LIGHTBLUE_EX)
-    display_message(" <<   The program is finished!   >>", Fore.LIGHTBLUE_EX)
-    exit()
+            print(c.red + "Invalid input. Please enter a number.")
 
 
 def main():
