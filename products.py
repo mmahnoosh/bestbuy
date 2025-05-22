@@ -89,6 +89,16 @@ class Product:
         return ""
 
     def buy(self, quantity):
+        """
+           Processes the purchase of a specified quantity of the product.
+           Args:
+               quantity (int): The number of units to purchase.
+           Returns:
+               float: The total price for the purchased quantity.
+           Raises:
+               ValueError: If the product is inactive or if the requested quantity
+                           exceeds the available stock.
+        """
         if not self.is_active():
             raise ValueError("Product inactive!")
         if self.get_quantity() < quantity:

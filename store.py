@@ -90,14 +90,20 @@ class Store:
 
     def order(self, shopping_list):
         """
-           Process a new order based on a shopping list.
-            Args:
-                shopping_list (List[tuple[Product, int]]): A list of product-quantity pairs.
-            Returns:
-                float: The total price of the order.
-            Raises:
-                    TypeError: If the shopping list contains invalid data.
-                    ValueError: If the requested quantity is not available.
+            Processes a new order based on a list of product-quantity pairs.
+        Args:
+            shopping_list (List[tuple[Product, int]]):
+            A list where each element is a tuple containing a Product instance
+            and the quantity to be purchased.
+
+        Returns:
+            str: A formatted string indicating the total price of the order,
+             or an error message if the order fails.
+
+        Raises:
+        TypeError: If an item in the shopping list is not a (Product, int) tuple.
+        ValueError: If the quantity is not a positive integer or if the requested
+                    quantity is unavailable.
         """
         total_price = 0
         order_list = []
